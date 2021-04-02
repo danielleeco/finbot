@@ -1,9 +1,9 @@
-from app.app import get_interval_candles
+from app.app import get_interval_candles, get_volume
 
 
 def test_data_candles():
     ticker = 'TSLA'
-    print(get_interval_candles(ticker, '2019-03-12', '2019-08-12'))
+    print(get_volume(ticker, '2019-03-12'))
 
 
 test_data_candles()

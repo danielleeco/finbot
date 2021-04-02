@@ -69,3 +69,21 @@ def get_interval_candles(ticker: str, left_time: str,
     diff = round(100 - (100 / (res[0] / res[1])), 2)
     result = f'Ticker - {ticker}: {left_time} {res[0]}$ - {right_time} {res[1]}$ diff {diff}%'
     return result
+
+
+def get_volume(ticker: str, time: str, interval='day'):
+    time_ = time[:-1] + str(int(time[-1]) - 1)
+    candies = get_candles(ticker, time_, time, interval='day')
+    high = candies[0]['h']
+    low = candies[0]['l']
+    mean = high/2 + low/2
+    volume = candies[0]['v'] * mean
+    k = '$'
+    if volume >= 10**6:
+        volume = round((volume / 10**6), 3)
+        k = 'M$'
+    elif volume >= 10**3:
+        volume = round((volume / 10**3), 3)
+        k = 'K$'
+    result = f'Ticker - {ticker}, volume - {volume}{k}'
+    return result
