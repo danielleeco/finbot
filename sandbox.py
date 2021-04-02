@@ -1,8 +1,10 @@
-from app.app import get_figi_by_ticker, get_candles, get_interval_candles
+from app.app import get_interval_candles
+
 
 def test_data_candles():
     ticker = 'TSLA'
     print(get_interval_candles(ticker, '2019-03-12', '2019-08-12'))
+
 
 test_data_candles()
 
