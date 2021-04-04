@@ -1,12 +1,28 @@
-from app.app import get_interval_candles, get_volume
+from app.app import get_interval_candles, get_volume, get_currency
 
 
-def test_data_candles():
+def test_get_candle():
     ticker = 'TSLA'
-    print(get_volume(ticker, '2019-03-12'))
+    print(get_interval_candles(ticker, '2017-03-14', '2019-10-22'))
 
 
-test_data_candles()
+test_get_candle()
+
+
+def test_get_volume():
+    ticker = 'AAPL'
+    print(get_volume(ticker, '2017-08-23'))
+
+
+test_get_volume()
+
+
+def test_get_currency():
+    currency = 'USD'
+    print(get_currency(currency, '2019-03-12', '2019-02-26'))
+
+
+test_get_currency()
 
 # s = '2019-08-19'
 # sn = s[:-1] + str(int(s[-1]) - 1)

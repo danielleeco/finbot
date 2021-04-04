@@ -85,5 +85,29 @@ def get_volume(ticker: str, time: str, interval='day'):
     elif volume >= 10**3:
         volume = round((volume / 10**3), 3)
         k = 'K$'
-    result = f'Ticker - {ticker}, volume - {volume}{k}'
+    result = f'Ticker - {ticker}, {time}, volume - {volume}{k}'
+    return result
+
+
+def get_currency(currency: str, left_time: str,
+                 right_time: str, interval='day'):
+
+    ticker_cur = {
+        'USD': "USD000UTSTOM",
+        'EUR': "EUR_RUB__TOM"
+    }
+
+    ticker = ticker_cur[currency]
+
+    left_time_1 = left_time[:-1] + str(int(left_time[-1]) - 1)
+    right_time_1 = right_time[:-1] + str(int(right_time[-1]) - 1)
+    left_time_2 = left_time
+    right_time_2 = right_time
+
+    start = get_candles(ticker, left_time_1, left_time_2, interval='day')
+    end = get_candles(ticker, right_time_1, right_time_2, interval='day')
+
+    res = [start[0]['o'], end[0]['o']]
+    diff = round(100 - (100 / (res[0] / res[1])), 2)
+    result = f'Currency - {currency}: {left_time} {res[0]}$ - {right_time} {res[1]}$ diff {diff}%'
     return result
