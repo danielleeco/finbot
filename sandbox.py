@@ -2,7 +2,7 @@ from app.app import get_interval_candles, get_volume, get_currency
 
 
 def test_get_candle():
-    ticker = 'TSLA'
+    ticker = 'AAPL'
     print(get_interval_candles(ticker, '2017-03-14', '2019-10-22'))
 
 
