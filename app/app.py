@@ -18,6 +18,7 @@ def get_figi_by_ticker(ticker: str):
 
     try:
         response = requests.get(url, headers=headers, params=params)
+        response.raise_for_status()
         insts = response.json()['payload']['instruments']
         if len(insts) != 1:
             raise Exception(f"insts by ticker {len(insts)}")
@@ -64,9 +65,15 @@ def get_interval_candles(ticker: str, left_time: str,
 
     start = get_candles(ticker, left_time_1, left_time_2, interval='day')
     end = get_candles(ticker, right_time_1, right_time_2, interval='day')
+    diff = 0
 
-    res = [start[0]['o'], end[0]['o']]
-    diff = round(100 - (100 / (res[0] / res[1])), 2) * (-1)
+    if start and end is not None:
+        res = [start[0]['o'], end[0]['o']]
+        diff = round(100 - (100 / (res[0] / res[1])), 2) * (-1)
+    else:
+        start = 0
+        end = 0
+        res = [start, end]
     result = f'Ticker - {ticker}: {left_time} {res[0]}$ - {right_time} {res[1]}$ diff {diff}%'
     return result
 
