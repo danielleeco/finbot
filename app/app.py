@@ -81,17 +81,21 @@ def get_interval_candles(ticker: str, left_time: str,
 def get_volume(ticker: str, time: str, interval='day'):
     time_ = time[:-1] + str(int(time[-1]) - 1)
     candies = get_candles(ticker, time_, time, interval='day')
-    high = candies[0]['h']
-    low = candies[0]['l']
-    mean = high/2 + low/2
-    volume = candies[0]['v'] * mean
     k = '$'
-    if volume >= 10**6:
-        volume = round((volume / 10**6), 3)
-        k = 'M$'
-    elif volume >= 10**3:
-        volume = round((volume / 10**3), 3)
-        k = 'K$'
+
+    if candies is not None:
+        high = candies[0]['h']
+        low = candies[0]['l']
+        mean = high/2 + low/2
+        volume = candies[0]['v'] * mean
+        if volume >= 10**6:
+            volume = round((volume / 10**6), 3)
+            k = 'M$'
+        elif volume >= 10**3:
+            volume = round((volume / 10**3), 3)
+            k = 'K$'
+    else:
+        volume = 0
     result = f'Ticker - {ticker}, {time}, volume - {volume}{k}'
     return result
 
@@ -113,8 +117,15 @@ def get_currency(currency: str, left_time: str,
 
     start = get_candles(ticker, left_time_1, left_time_2, interval='day')
     end = get_candles(ticker, right_time_1, right_time_2, interval='day')
+    diff = 0
 
-    res = [start[0]['o'], end[0]['o']]
-    diff = round(100 - (100 / (res[0] / res[1])), 2) * (-1)
+    if start and end is not None:
+        res = [start[0]['o'], end[0]['o']]
+        diff = round(100 - (100 / (res[0] / res[1])), 2) * (-1)
+    else:
+        start = 0
+        end = 0
+        res = [start, end]
+
     result = f'Currency - {currency}: {left_time} {res[0]}$ - {right_time} {res[1]}$ diff {diff}%'
     return result
