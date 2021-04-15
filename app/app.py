@@ -108,6 +108,6 @@ def get_currency(currency: str, left_time: str,
     end = get_candles(ticker, right_time_1, right_time_2, interval='day')
 
     res = [start[0]['o'], end[0]['o']]
-    diff = round(100 - (100 / (res[0] / res[1])), 2)
+    diff = round(100 - (100 / (res[0] / res[1])), 2) * (-1)
     result = f'Currency - {currency}: {left_time} {res[0]}$ - {right_time} {res[1]}$ diff {diff}%'
     return result
