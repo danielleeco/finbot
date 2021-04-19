@@ -10,11 +10,12 @@ bot = telebot.TeleBot(TOKEN, parse_mode='MARKDOWN')
 keyboard_a = telebot.types.ReplyKeyboardMarkup(True, True)
 keyboard_a.row('/get_candles', '/get_volume', '/get_currency')
 
+valid_logins = ('danielle_kettler', 'BarinovAF')
 
-# @bot.channel_post_handler(commands=['id'])
-@bot.message_handler(commands=['id'])
+# @bot.channel_post_handler(commands=['start'])
+@bot.message_handler(commands=['start'])
 def send_id(message):
-    bot.reply_to(message, f"`{message.chat.id}`", reply_markup=keyboard_a)
+    bot.reply_to(message, "Hello", reply_markup=keyboard_a)
 
 # get candles handler
 @bot.message_handler(commands=['get_candles'])
@@ -22,7 +23,7 @@ def get_ticker(message):
     if message.text.lower() == 'отмена':
         bot.send_message(message.from_user.id, 'На нетъ и суда нетъ')
         return
-    if message.chat.username == 'danielle_kettler':
+    if message.chat.username in valid_logins:
         ticker = bot.send_message(message.chat.id, 'give me a ticker')
         print(message.text)
         bot.register_next_step_handler(ticker, get_data)
@@ -58,7 +59,7 @@ def get_ticker2(message):
     if message.text.lower() == 'отмена':
         bot.send_message(message.from_user.id, 'На нетъ и суда нетъ')
         return
-    if message.chat.username == 'danielle_kettler':
+    if message.chat.username in valid_logins:
         ticker = bot.send_message(message.chat.id, 'give me a ticker')
         print(message.text)
         bot.register_next_step_handler(ticker, get_data2)
@@ -85,13 +86,14 @@ def interval_vol(message):
     res = get_volume(ticker, date)
     bot.send_message(message.chat.id, res)
 
+
 # get currency handler
 @bot.message_handler(commands=['get_currency'])
 def get_curr(message):
     if message.text.lower() == 'отмена':
         bot.send_message(message.from_user.id, 'На нетъ и суда нетъ')
         return
-    if message.chat.username == 'danielle_kettler':
+    if message.chat.username in valid_logins:
         curr = bot.send_message(message.chat.id, 'give me name of a currency')
         print(message.text)
         bot.register_next_step_handler(curr, get_data3)
